@@ -13,6 +13,7 @@ namespace dae
 	public:
 		// Constructors and Destructor
 		explicit Scene();
+		explicit Scene(const Camera& camera);
 		~Scene();
 		
 		// Copy and Move semantics

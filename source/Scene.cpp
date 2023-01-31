@@ -16,6 +16,11 @@ Scene::Scene()
 {
 }
 
+Scene::Scene(const Camera& camera)
+	: m_Camera(camera)
+{
+}
+
 
 //-----------------------------------------------------------------
 // Destructor
