@@ -5,22 +5,25 @@ struct SDL_Surface;
 
 namespace dae
 {
+	class Scene;
+
 	class Renderer final
 	{
 	public:
 		Renderer(SDL_Window* pWindow);
 		~Renderer();
 
-		Renderer(const Renderer&) = delete;
-		Renderer(Renderer&&) noexcept = delete;
-		Renderer& operator=(const Renderer&) = delete;
-		Renderer& operator=(Renderer&&) noexcept = delete;
+		Renderer(const Renderer&)					= delete;
+		Renderer(Renderer&&) noexcept				= delete;
+		Renderer& operator=(const Renderer&)		= delete;
+		Renderer& operator=(Renderer&&) noexcept	= delete;
 
 		void Update(const Timer* pTimer);
 		void Render() const;
 
 	private:
 		SDL_Window* m_pWindow{};
+		Scene* m_pScene{};
 
 		int m_Width{};
 		int m_Height{};
@@ -40,5 +43,8 @@ namespace dae
 
 		ID3D11Texture2D* m_pRenderTargetBuffer;
 		ID3D11RenderTargetView* m_pRenderTargetView;
+
+		//SCENES
+		Scene* Scene1();
 	};
 }

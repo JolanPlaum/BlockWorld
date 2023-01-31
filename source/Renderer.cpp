@@ -1,5 +1,10 @@
 #include "pch.h"
 #include "Renderer.h"
+#include "Utils.h"
+#include "Scene.h"
+#include "Mesh.h"
+#include "Material.h"
+#include "Texture.h"
 
 namespace dae {
 
@@ -18,6 +23,7 @@ namespace dae {
 		{
 			m_IsInitialized = true;
 			std::cout << "DirectX is initialized and ready!\n";
+			m_pScene = Scene1();
 		}
 		else
 		{
@@ -27,6 +33,8 @@ namespace dae {
 
 	Renderer::~Renderer()
 	{
+		delete m_pScene;
+
 		if (m_pRenderTargetView) m_pRenderTargetView->Release();
 		if (m_pRenderTargetBuffer) m_pRenderTargetBuffer->Release();
 
@@ -46,9 +54,8 @@ namespace dae {
 
 	void Renderer::Update(const Timer* pTimer)
 	{
-
+		m_pScene->Update(pTimer);
 	}
-
 
 	void Renderer::Render() const
 	{
@@ -61,7 +68,7 @@ namespace dae {
 		m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
 		//2. SET PIPELINE + INVOKE DRAWCALLS (= RENDER)
-		//...
+		m_pScene->Render(m_pDeviceContext);
 
 		//3. PRESENT BACKBUFFER (SWAP)
 		m_pSwapChain->Present(0, 0);
@@ -194,5 +201,25 @@ namespace dae {
 
 
 		return result;
+	}
+
+	Scene* Renderer::Scene1()
+	{
+		//Instantiate scene
+		Scene* pScene = new Scene(Camera({ 0.f,0.f,0.f }, 45.f, m_Width / (float)m_Height));
+
+		//Create data for our mesh
+		std::vector<Vertex> vertices{};
+		std::vector<uint32_t> indices{};
+		Utils::ParseOBJ("Resources/cube.obj", vertices, indices);
+
+		//Load material
+		Material* pMat = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
+		pMat->SetTexture(new Texture(m_pDevice, "Resources/uv_grid_2.png"));
+
+		//Add mesh to scene
+		pScene->AddMesh(new Mesh(m_pDevice, pMat, vertices, indices));
+
+		return pScene;
 	}
 }
