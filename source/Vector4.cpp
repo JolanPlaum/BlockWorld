@@ -79,6 +79,11 @@ namespace dae
 		return *this;
 	}
 
+	float Vector4::operator*(const Vector4& v) const
+	{
+		return x * v.x + y * v.y + z * v.z + w * v.w;
+	}
+
 	float& Vector4::operator[](int index)
 	{
 		assert(index <= 3 && index >= 0);

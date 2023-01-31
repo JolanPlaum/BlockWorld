@@ -30,6 +30,7 @@ namespace dae
 		Vector4 operator+(const Vector4& v) const;
 		Vector4 operator-(const Vector4& v) const;
 		Vector4& operator+=(const Vector4& v);
+		float operator*(const Vector4& v) const;
 		float& operator[](int index);
 		float operator[](int index) const;
 	};
