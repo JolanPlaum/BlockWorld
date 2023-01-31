@@ -1,7 +1,10 @@
 #pragma once
 
-struct Vertex
+namespace dae
 {
-	Vector3 position{};
-	Vector2 uv{};
-};
+	struct Vertex
+	{
+		Vector3 position{};
+		Vector2 uv{};
+	};
+}
