@@ -27,8 +27,13 @@ Material::Material(ID3D11Device* pDevice, const std::wstring& assetFile)
 	if (!m_pMatWorldViewProjVariable->IsValid())
 		std::wcout << L"Matrix Variable gWorldViewProj not valid\n";
 
+	//Load Textures
+	m_pDiffuseMapVariable = m_pEffect->GetVariableByName("gDiffuseMap")->AsShaderResource();
+	if (!m_pDiffuseMapVariable->IsValid())
+		std::wcout << L"Shader Resource gDiffuseMap Variable not valid\n";
+
 	//Create Vertex Layout
-	static constexpr uint32_t numElements{ 4 };
+	static constexpr uint32_t numElements{ 2 };
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[numElements]{};
 
 	vertexDesc[0].SemanticName = "POSITION";
