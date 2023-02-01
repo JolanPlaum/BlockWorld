@@ -7,12 +7,12 @@ namespace dae
 	class Texture;
 	
 	// Class Declaration
-	class Material
+	class Material final
 	{
 	public:
 		// Constructors and Destructor
 		explicit Material(ID3D11Device* pDevice, const std::wstring& assetFile);
-		virtual ~Material();
+		~Material();
 		
 		// Copy and Move semantics
 		Material(const Material& other)					= delete;
@@ -26,9 +26,9 @@ namespace dae
 		static ID3DX11Effect* LoadEffect(ID3D11Device* pDevice, const std::wstring& assetFile);
 
 		//WorldViewProjection Matrix only
-		virtual void SetMatrix(Matrix& matrix);
+		void SetMatrix(Matrix& matrix);
 		//Diffuse Texture only
-		virtual void SetTexture(Texture* pTexture);
+		void SetTexture(Texture* pTexture);
 
 		ID3DX11Effect* GetEffect() const { return m_pEffect; }
 		ID3DX11EffectTechnique* GetTechnique() const { return m_pTechnique; }
