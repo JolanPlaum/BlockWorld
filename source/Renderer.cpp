@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Material.h"
 #include "Texture.h"
+#include "Chunk.h"
 
 namespace dae {
 
@@ -23,7 +24,7 @@ namespace dae {
 		{
 			m_IsInitialized = true;
 			std::cout << "DirectX is initialized and ready!\n";
-			m_pScene = Scene1();
+			m_pScene = Scene2();
 		}
 		else
 		{
@@ -34,6 +35,7 @@ namespace dae {
 	Renderer::~Renderer()
 	{
 		delete m_pScene;
+		delete m_pChunk;
 
 		if (m_pRenderTargetView) m_pRenderTargetView->Release();
 		if (m_pRenderTargetBuffer) m_pRenderTargetBuffer->Release();
@@ -72,6 +74,16 @@ namespace dae {
 
 		//3. PRESENT BACKBUFFER (SWAP)
 		m_pSwapChain->Present(0, 0);
+	}
+
+	BlockType Renderer::GetBlockType(int x, int y, int z)
+	{
+		int waterHeight{ 10 }, groundHeight{ 3 };
+		int dirtHeight = std::max(x, z) + groundHeight;
+
+		if (y < dirtHeight) return BlockType::dirt;
+		if (y < waterHeight) return BlockType::water;
+		return BlockType::air;
 	}
 
 	HRESULT Renderer::InitializeDirectX(IDXGIFactory1*& pDxgiFactory)
@@ -206,19 +218,91 @@ namespace dae {
 	Scene* Renderer::Scene1()
 	{
 		//Instantiate scene
-		Scene* pScene = new Scene(Camera({ 0.f,0.f,0.f }, 45.f, m_Width / (float)m_Height));
+		Scene* pScene = new Scene(Camera({ 0.f,0.f, -10.f }, 45.f, m_Width / (float)m_Height));
 
 		//Create data for our mesh
-		std::vector<Vertex> vertices{};
-		std::vector<uint32_t> indices{};
-		Utils::ParseOBJ("Resources/cube.obj", vertices, indices);
+		std::vector<Vertex> vertices{
+			//front
+			{{1, 1, 0},		{1, 0}},
+			{{1, 0, 0},		{1, 1}},
+			{{0, 1, 0},		{0, 0}},
+			{{0, 0, 0},		{0, 1}},
 
+			//back
+			{{0, 1, 1},		{1, 0}},
+			{{0, 0, 1},		{1, 1}},
+			{{1, 1, 1},		{0, 0}},
+			{{1, 0, 1},		{0, 1}},
+
+			//bottom
+			{{0, 0, 1},		{1, 0}},
+			{{0, 0, 0},		{1, 1}},
+			{{1, 0, 1},		{0, 0}},
+			{{1, 0, 0},		{0, 1}},
+
+			//top
+			{{0, 1, 0},		{1, 0}},
+			{{0, 1, 1},		{1, 1}},
+			{{1, 1, 0},		{0, 0}},
+			{{1, 1, 1},		{0, 1}},
+
+			//left
+			{{0, 1, 0},		{1, 0}},
+			{{0, 0, 0},		{1, 1}},
+			{{0, 1, 1},		{0, 0}},
+			{{0, 0, 1},		{0, 1}},
+
+			//right
+			{{1, 1, 1},		{1, 0}},
+			{{1, 0, 1},		{1, 1}},
+			{{1, 1, 0},		{0, 0}},
+			{{1, 0, 0},		{0, 1}},
+		};
+		std::vector<uint32_t> indices{ 0, 1, 2, 3, 2, 1};
+		//Utils::ParseOBJ("Resources/cube.obj", vertices, indices);
+		
 		//Load material
 		Material* pMat = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
-		pMat->SetTexture(new Texture(m_pDevice, "Resources/uv_grid_2.png"));
+		Texture* pTex = new Texture(m_pDevice, "Resources/uv_grid_2.png");
+		pMat->SetTexture(pTex);
 
 		//Add mesh to scene
 		pScene->AddMesh(new Mesh(m_pDevice, pMat, vertices, indices));
+
+		delete pTex;
+
+		return pScene;
+	}
+
+	Scene* Renderer::Scene2()
+	{
+		//Instantiate scene
+		Scene* pScene = new Scene(Camera({ 8.f, 16.f, -8.f }, 45.f, m_Width / (float)m_Height));
+
+		//Load material
+		Material* pMat = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
+		Texture* pTex = new Texture(m_pDevice, "Resources/uv_grid_2.png");
+		pMat->SetTexture(pTex);
+
+		m_pChunk = new Chunk();
+
+		for (int x{}; x < Chunk::width; ++x)
+		{
+			for (int z{}; z < Chunk::width; ++z)
+			{
+				for (int y{}; y < Chunk::heigth; ++y)
+				{
+					m_pChunk->blocks[x][y][z] = GetBlockType(x, y, z);
+				}
+			}
+		}
+
+		m_pChunk->Initialize(m_pDevice, pMat);
+
+		//Add mesh to scene
+		pScene->AddMesh(m_pChunk->GetMesh());
+
+		delete pTex;
 
 		return pScene;
 	}

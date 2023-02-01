@@ -6,6 +6,7 @@ struct SDL_Surface;
 namespace dae
 {
 	class Scene;
+	class Chunk;
 
 	class Renderer final
 	{
@@ -24,12 +25,16 @@ namespace dae
 	private:
 		SDL_Window* m_pWindow{};
 		Scene* m_pScene{};
+		Chunk* m_pChunk{};
 
 		int m_Width{};
 		int m_Height{};
 
 		bool m_IsInitialized{ false };
 
+		//Chunk helper functions
+		BlockType GetBlockType(int x, int y, int z);
+		
 		//DIRECTX
 		HRESULT InitializeDirectX(IDXGIFactory1*& pDxgiFactory);
 
@@ -46,5 +51,7 @@ namespace dae
 
 		//SCENES
 		Scene* Scene1();
+		Scene* Scene2();
+
 	};
 }
