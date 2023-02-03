@@ -8,7 +8,6 @@ namespace dae
 	class Scene;
 	class Material;
 	class Chunk;
-	class ChunkManager;
 
 	class Renderer final
 	{
@@ -29,7 +28,6 @@ namespace dae
 		Scene* m_pScene{};
 		Material* m_pMaterial{};
 		Chunk* m_pChunk{};
-		ChunkManager* m_pChunkManager{};
 
 		int m_Width{};
 		int m_Height{};

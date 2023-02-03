@@ -38,7 +38,6 @@ namespace dae {
 		delete m_pScene;
 		delete m_pMaterial;
 		delete m_pChunk;
-		delete m_pChunkManager;
 
 		if (m_pRenderTargetView) m_pRenderTargetView->Release();
 		if (m_pRenderTargetBuffer) m_pRenderTargetBuffer->Release();
@@ -318,16 +317,13 @@ namespace dae {
 		Texture* pTex = new Texture(m_pDevice, "Resources/Atlas.png");
 		m_pMaterial->SetTexture(pTex);
 
-		//Instantiate chunks
-		m_pChunkManager = new ChunkManager();
-
 		//Add meshes to scene
 		Mesh* pTempMesh{};
 		for (int x{}; x < ChunkManager::m_WorldWidth; ++x)
 		{
 			for (int z{}; z < ChunkManager::m_WorldWidth; ++z)
 			{
-				pTempMesh = m_pChunkManager->GetChunk(x, z).Initialize(m_pDevice, m_pMaterial, { x, z });
+				pTempMesh = ChunkManager::GetInstance().GetChunk(x, z).Initialize(m_pDevice, m_pMaterial, {x, z});
 				pScene->AddMesh(pTempMesh);
 			}
 		}

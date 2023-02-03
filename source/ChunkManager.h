@@ -11,7 +11,11 @@ namespace dae
 	{
 	public:
 		// Constructors and Destructor
-		explicit ChunkManager();
+		static ChunkManager& GetInstance()
+		{
+			static ChunkManager instance{};
+			return instance;
+		}
 		~ChunkManager();
 		
 		// Copy and Move semantics
@@ -31,6 +35,8 @@ namespace dae
 	
 	private:
 		// Member variables
+		ChunkManager();
+
 		Chunk m_Chunks[m_WorldSize]{};
 		std::vector<Coord> m_ChunkCoords{ m_WorldSize };
 	
