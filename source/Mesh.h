@@ -28,6 +28,7 @@ namespace dae
 		void Translate(const Vector3& translation);
 		void Rotate(const Vector3& rotation);
 
+		void SetPosition(int x, int y, int z);
 		void SetPosition(float x, float y, float z);
 		void SetRotation(float pitch, float yaw, float roll);
 		void SetScale(const Vector3& scale);

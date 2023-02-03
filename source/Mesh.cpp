@@ -96,6 +96,11 @@ void Mesh::Rotate(const Vector3& rotation)
 	m_Rotation += rotation;
 }
 
+void Mesh::SetPosition(int x, int y, int z)
+{
+	SetPosition(float(x), float(y), float(z));
+}
+
 void Mesh::SetPosition(float x, float y, float z)
 {
 	m_Position = Vector3{ x, y, z };
