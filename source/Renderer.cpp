@@ -323,7 +323,7 @@ namespace dae {
 		{
 			for (int z{}; z < ChunkManager::m_WorldWidth; ++z)
 			{
-				pTempMesh = ChunkManager::GetInstance().GetChunk(x, z).Initialize(m_pDevice, m_pMaterial, {x, z});
+				pTempMesh = ChunkManager::GetInstance().GetChunk(x, z)->Initialize(m_pDevice, m_pMaterial, {x, z});
 				pScene->AddMesh(pTempMesh);
 			}
 		}

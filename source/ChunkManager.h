@@ -30,19 +30,19 @@ namespace dae
 		static const int m_WorldWidth{ 2 };
 		static const int m_WorldSize{ m_WorldWidth * m_WorldWidth };
 
-		Chunk& GetChunk(int x, int z);
+		Chunk* GetChunk(int x, int z);
 	
 	
 	private:
 		// Member variables
-		ChunkManager();
-
 		Chunk m_Chunks[m_WorldSize]{};
 		std::vector<Coord> m_ChunkCoords{ m_WorldSize };
 	
 		//---------------------------
 		// Private Member Functions
 		//---------------------------
+		ChunkManager();
+
 		void LoadChunk(Chunk& chunk);
 		BlockType GetBlockType(int x, int y, int z);
 	};

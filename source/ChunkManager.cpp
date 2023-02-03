@@ -32,12 +32,13 @@ ChunkManager::~ChunkManager()
 //-----------------------------------------------------------------
 // Public Member Functions
 //-----------------------------------------------------------------
-Chunk& ChunkManager::GetChunk(int x, int z)
+Chunk* ChunkManager::GetChunk(int x, int z)
 {
 	auto it = std::find(m_ChunkCoords.begin(), m_ChunkCoords.end(), Coord{x, z});
+	if (it == m_ChunkCoords.end()) return nullptr;
 
 	int index = static_cast<int>(it - m_ChunkCoords.begin());
-	return m_Chunks[index % m_WorldSize];
+	return &m_Chunks[index];
 }
 
 
