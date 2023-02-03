@@ -24,7 +24,7 @@ namespace dae
 		//---------------------------
 		// Public Member Functions
 		//---------------------------
-		Mesh* Initialize(ID3D11Device* pDevice, Material* pMaterial);
+		Mesh* Initialize(ID3D11Device* pDevice, Material* pMaterial, Coord coord);
 
 		static const int width{ 16 };
 		static const int heigth{ 256 };
@@ -37,12 +37,12 @@ namespace dae
 		//---------------------------
 		// Private Member Functions
 		//---------------------------
-		void AddFaceFront(std::vector<Vertex>& vector, int x, int y, int z);
-		void AddFaceBack(std::vector<Vertex>& vector, int x, int y, int z);
-		void AddFaceBottom(std::vector<Vertex>& vector, int x, int y, int z);
-		void AddFaceTop(std::vector<Vertex>& vector, int x, int y, int z);
-		void AddFaceLeft(std::vector<Vertex>& vector, int x, int y, int z);
-		void AddFaceRight(std::vector<Vertex>& vector, int x, int y, int z);
+		void AddFaceFront(std::vector<Vertex>& vector, int x, int y, int z, const Coord& c);
+		void AddFaceBack(std::vector<Vertex>& vector, int x, int y, int z, const Coord& c);
+		void AddFaceBottom(std::vector<Vertex>& vector, int x, int y, int z, const Coord& c);
+		void AddFaceTop(std::vector<Vertex>& vector, int x, int y, int z, const Coord& c);
+		void AddFaceLeft(std::vector<Vertex>& vector, int x, int y, int z, const Coord& c);
+		void AddFaceRight(std::vector<Vertex>& vector, int x, int y, int z, const Coord& c);
 	
 	};
 }

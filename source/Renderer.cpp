@@ -301,7 +301,7 @@ namespace dae {
 		}
 
 		//Add mesh to scene
-		pScene->AddMesh(m_pChunk->Initialize(m_pDevice, m_pMaterial));
+		pScene->AddMesh(m_pChunk->Initialize(m_pDevice, m_pMaterial, {}));
 
 		delete pTex;
 
@@ -327,8 +327,7 @@ namespace dae {
 		{
 			for (int z{}; z < ChunkManager::m_WorldWidth; ++z)
 			{
-				pTempMesh = m_pChunkManager->GetChunk(x, z).Initialize(m_pDevice, m_pMaterial);
-				pTempMesh->SetPosition(x, 0, z);
+				pTempMesh = m_pChunkManager->GetChunk(x, z).Initialize(m_pDevice, m_pMaterial, { x, z });
 				pScene->AddMesh(pTempMesh);
 			}
 		}
