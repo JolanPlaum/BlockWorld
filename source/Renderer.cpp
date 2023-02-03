@@ -262,12 +262,12 @@ namespace dae {
 		//Utils::ParseOBJ("Resources/cube.obj", vertices, indices);
 		
 		//Load material
-		Material* pMat = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
+		m_pMaterial = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
 		Texture* pTex = new Texture(m_pDevice, "Resources/uv_grid_2.png");
-		pMat->SetTexture(pTex);
+		m_pMaterial->SetTexture(pTex);
 
 		//Add mesh to scene
-		pScene->AddMesh(new Mesh(m_pDevice, pMat, vertices, indices));
+		pScene->AddMesh(new Mesh(m_pDevice, m_pMaterial, vertices, indices));
 
 		delete pTex;
 
@@ -280,9 +280,9 @@ namespace dae {
 		Scene* pScene = new Scene(Camera({ 8.f, 16.f, -8.f }, 45.f, m_Width / (float)m_Height));
 
 		//Load material
-		Material* pMat = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
+		m_pMaterial = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
 		Texture* pTex = new Texture(m_pDevice, "Resources/Atlas.png");
-		pMat->SetTexture(pTex);
+		m_pMaterial->SetTexture(pTex);
 
 		m_pChunk = new Chunk();
 
@@ -298,7 +298,7 @@ namespace dae {
 		}
 
 		//Add mesh to scene
-		pScene->AddMesh(m_pChunk->Initialize(m_pDevice, pMat));
+		pScene->AddMesh(m_pChunk->Initialize(m_pDevice, m_pMaterial));
 
 		delete pTex;
 

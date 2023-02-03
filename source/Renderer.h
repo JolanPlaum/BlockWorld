@@ -6,6 +6,7 @@ struct SDL_Surface;
 namespace dae
 {
 	class Scene;
+	class Material;
 	class Chunk;
 
 	class Renderer final
@@ -25,6 +26,7 @@ namespace dae
 	private:
 		SDL_Window* m_pWindow{};
 		Scene* m_pScene{};
+		Material* m_pMaterial{};
 		Chunk* m_pChunk{};
 
 		int m_Width{};

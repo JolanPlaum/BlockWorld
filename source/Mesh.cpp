@@ -53,8 +53,6 @@ Mesh::~Mesh()
 {
 	if (m_pIndexBuffer) m_pIndexBuffer->Release();
 	if (m_pVertexBuffer) m_pVertexBuffer->Release();
-
-	delete m_pMaterial;
 }
 
 
