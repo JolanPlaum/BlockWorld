@@ -47,11 +47,7 @@ void Scene::Update(const Timer* pTimer)
 	Matrix viewProj = m_Camera.GetViewMatrix() * m_Camera.GetProjectionMatrix();
 
 	//Update Mesh
-	for (Mesh*& pMesh : m_pMeshes)
-	{
-		viewProj = pMesh->GetWorldMatrix() * viewProj;
-		pMesh->GetMaterial()->SetMatrix(viewProj);
-	}
+	m_pMeshes[0]->GetMaterial()->SetMatrix(viewProj);
 }
 
 void Scene::Render(ID3D11DeviceContext* pDeviceContext) const

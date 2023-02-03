@@ -27,7 +27,7 @@ namespace dae
 		//---------------------------
 		// Public Member Functions
 		//---------------------------
-		static const int m_WorldWidth{ 2 };
+		static const int m_WorldWidth{ 32 };
 		static const int m_WorldSize{ m_WorldWidth * m_WorldWidth };
 
 		Chunk* GetChunk(int x, int z);

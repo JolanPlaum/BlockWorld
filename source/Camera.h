@@ -55,7 +55,7 @@ namespace dae
 		const float m_RotationSpeed{ 5.f };
 
 		const float m_Near{ 0.1f };
-		const float m_Far{ 100.f };
+		const float m_Far{ 1000.f };
 	
 		//---------------------------
 		// Private Member Functions
