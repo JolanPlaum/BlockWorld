@@ -8,6 +8,17 @@ namespace dae
 		Vector2 uv{};
 	};
 
+	struct Coord
+	{
+		int x{};
+		int z{};
+
+		bool operator==(const Coord& c) const
+		{
+			return x == c.x && z == c.z;
+		}
+	};
+
 	enum class BlockType : BYTE
 	{
 		air,
