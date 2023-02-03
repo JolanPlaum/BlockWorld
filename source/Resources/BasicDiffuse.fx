@@ -12,9 +12,9 @@ RasterizerState gRasterizerState
 
 SamplerState gSamAnisotropic
 {
-	Filter = ANISOTROPIC;
-	AddressU = Wrap; // Mirror, Clamp, Border or Wrap
-	AddressV = Wrap; // Mirror, Clamp, Border or Wrap
+	Filter = MIN_MAG_MIP_POINT;
+	AddressU = Mirror; // Mirror, Clamp, Border or Wrap
+	AddressV = Mirror; // Mirror, Clamp, Border or Wrap
 };
 
 //---------------------------------------------------
