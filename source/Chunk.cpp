@@ -24,6 +24,7 @@ Chunk::Chunk()
 //-----------------------------------------------------------------
 Chunk::~Chunk()
 {
+	Cleanup();
 }
 
 
@@ -123,8 +124,14 @@ Mesh* Chunk::Initialize(ID3D11Device* pDevice, Material* pMaterial, Coord coord)
 		indices.insert(indices.end(), { i + 0, i + 1, i + 2, i + 3, i + 2, i + 1 });
 	}
 
+	if (m_pMesh) Cleanup();
+	return m_pMesh = new Mesh(pDevice, pMaterial, vertices, indices);
+}
 
-	return new Mesh(pDevice, pMaterial, vertices, indices);
+void Chunk::Cleanup()
+{
+	delete m_pMesh;
+	m_pMesh = nullptr;
 }
 
 

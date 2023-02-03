@@ -25,6 +25,9 @@ namespace dae
 		// Public Member Functions
 		//---------------------------
 		Mesh* Initialize(ID3D11Device* pDevice, Material* pMaterial, Coord coord);
+		void Cleanup();
+
+		Mesh* GetMesh() const { return m_pMesh; }
 
 		static const int width{ 16 };
 		static const int heigth{ 256 };
@@ -33,6 +36,7 @@ namespace dae
 	
 	private:
 		// Member variables
+		Mesh* m_pMesh{};
 
 		//---------------------------
 		// Private Member Functions

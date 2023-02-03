@@ -27,11 +27,6 @@ Scene::Scene(const Camera& camera)
 //-----------------------------------------------------------------
 Scene::~Scene()
 {
-	for (Mesh* pMesh : m_pMeshes)
-	{
-		delete pMesh;
-	}
-	m_pMeshes.clear();
 }
 
 
