@@ -281,7 +281,7 @@ namespace dae {
 
 		//Load material
 		Material* pMat = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
-		Texture* pTex = new Texture(m_pDevice, "Resources/uv_grid_2.png");
+		Texture* pTex = new Texture(m_pDevice, "Resources/Atlas.png");
 		pMat->SetTexture(pTex);
 
 		m_pChunk = new Chunk();
@@ -297,10 +297,8 @@ namespace dae {
 			}
 		}
 
-		m_pChunk->Initialize(m_pDevice, pMat);
-
 		//Add mesh to scene
-		pScene->AddMesh(m_pChunk->GetMesh());
+		pScene->AddMesh(m_pChunk->Initialize(m_pDevice, pMat));
 
 		delete pTex;
 

@@ -5,6 +5,7 @@
 #include "Chunk.h"
 #include "Mesh.h"
 #include "Material.h"
+#include "Atlas.h"
 
 using namespace dae;
 
@@ -28,7 +29,7 @@ Chunk::~Chunk()
 //-----------------------------------------------------------------
 // Public Member Functions
 //-----------------------------------------------------------------
-void Chunk::Initialize(ID3D11Device* pDevice, Material* pMaterial)
+Mesh* Chunk::Initialize(ID3D11Device* pDevice, Material* pMaterial)
 {
 	std::vector<Vertex> vertices{};
 	vertices.reserve(width * width * heigth);
@@ -80,7 +81,7 @@ void Chunk::Initialize(ID3D11Device* pDevice, Material* pMaterial)
 	}
 
 
-	m_pMesh = new Mesh(pDevice, pMaterial, vertices, indices);
+	return new Mesh(pDevice, pMaterial, vertices, indices);
 }
 
 
@@ -89,48 +90,54 @@ void Chunk::Initialize(ID3D11Device* pDevice, Material* pMaterial)
 //-----------------------------------------------------------------
 void Chunk::AddFaceFront(std::vector<Vertex>& vector, int x, int y, int z)
 {
-	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, {1.f, 0.f} });
-	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, {1.f, 1.f} });
-	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, {0.f, 0.f} });
-	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, {0.f, 1.f} });
+	std::vector<Vector2> temp = Atlas::GetUVs(blocks[x][y][z], FaceType::front);
+	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, temp[0] });
+	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, temp[1] });
+	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, temp[2] });
+	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, temp[3] });
 }
 
 void Chunk::AddFaceBack(std::vector<Vertex>& vector, int x, int y, int z)
 {
-	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, {1.f, 0.f} });
-	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, {1.f, 1.f} });
-	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, {0.f, 0.f} });
-	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, {0.f, 1.f} });
+	std::vector<Vector2> temp = Atlas::GetUVs(blocks[x][y][z], FaceType::back);
+	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, temp[0] });
+	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, temp[1] });
+	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, temp[2] });
+	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, temp[3] });
 }
 
 void Chunk::AddFaceBottom(std::vector<Vertex>& vector, int x, int y, int z)
 {
-	vector.push_back({ {x + 0.f, y + 0.f, z + 1.f}, {1.f, 0.f} });
-	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, {1.f, 1.f} });
-	vector.push_back({ {x + 1.f, y + 0.f, z + 1.f}, {0.f, 0.f} });
-	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, {0.f, 1.f} });
+	std::vector<Vector2> temp = Atlas::GetUVs(blocks[x][y][z], FaceType::bottom);
+	vector.push_back({ {x + 0.f, y + 0.f, z + 1.f}, temp[0] });
+	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, temp[1] });
+	vector.push_back({ {x + 1.f, y + 0.f, z + 1.f}, temp[2] });
+	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, temp[3] });
 }
 
 void Chunk::AddFaceTop(std::vector<Vertex>& vector, int x, int y, int z)
 {
-	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, {1.f, 0.f} });
-	vector.push_back({ {x + 0.f, y + 1.f, z + 1.f}, {1.f, 1.f} });
-	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, {0.f, 0.f} });
-	vector.push_back({ {x + 1.f, y + 1.f, z + 1.f}, {0.f, 1.f} });
+	std::vector<Vector2> temp = Atlas::GetUVs(blocks[x][y][z], FaceType::top);
+	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, temp[0] });
+	vector.push_back({ {x + 0.f, y + 1.f, z + 1.f}, temp[1] });
+	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, temp[2] });
+	vector.push_back({ {x + 1.f, y + 1.f, z + 1.f}, temp[3] });
 }
 
 void Chunk::AddFaceLeft(std::vector<Vertex>& vector, int x, int y, int z)
 {
-	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, {1.f, 0.f} });
-	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, {1.f, 1.f} });
-	vector.push_back({ {x + 0.f, y + 1.f, z + 1.f}, {0.f, 0.f} });
-	vector.push_back({ {x + 0.f, y + 0.f, z + 1.f}, {0.f, 1.f} });
+	std::vector<Vector2> temp = Atlas::GetUVs(blocks[x][y][z], FaceType::left);
+	vector.push_back({ {x + 0.f, y + 1.f, z + 0.f}, temp[0] });
+	vector.push_back({ {x + 0.f, y + 0.f, z + 0.f}, temp[1] });
+	vector.push_back({ {x + 0.f, y + 1.f, z + 1.f}, temp[2] });
+	vector.push_back({ {x + 0.f, y + 0.f, z + 1.f}, temp[3] });
 }
 
 void Chunk::AddFaceRight(std::vector<Vertex>& vector, int x, int y, int z)
 {
-	vector.push_back({ {x + 1.f, y + 1.f, z + 1.f}, {1.f, 0.f} });
-	vector.push_back({ {x + 1.f, y + 0.f, z + 1.f}, {1.f, 1.f} });
-	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, {0.f, 0.f} });
-	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, {0.f, 1.f} });
+	std::vector<Vector2> temp = Atlas::GetUVs(blocks[x][y][z], FaceType::right);
+	vector.push_back({ {x + 1.f, y + 1.f, z + 1.f}, temp[0] });
+	vector.push_back({ {x + 1.f, y + 0.f, z + 1.f}, temp[1] });
+	vector.push_back({ {x + 1.f, y + 1.f, z + 0.f}, temp[2] });
+	vector.push_back({ {x + 1.f, y + 0.f, z + 0.f}, temp[3] });
 }

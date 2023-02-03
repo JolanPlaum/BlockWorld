@@ -12,7 +12,7 @@ namespace dae
 	{
 	public:
 		// Constructors and Destructor
-		explicit Chunk();
+		Chunk();
 		~Chunk();
 		
 		// Copy and Move semantics
@@ -24,18 +24,15 @@ namespace dae
 		//---------------------------
 		// Public Member Functions
 		//---------------------------
-		void Initialize(ID3D11Device* pDevice, Material* pMaterial);
+		Mesh* Initialize(ID3D11Device* pDevice, Material* pMaterial);
 
 		static const int width{ 16 };
 		static const int heigth{ 256 };
 		BlockType blocks[width][heigth][width]{};
-
-		Mesh* GetMesh() const { return m_pMesh; }
 	
 	
 	private:
 		// Member variables
-		Mesh* m_pMesh{};
 
 		//---------------------------
 		// Private Member Functions
