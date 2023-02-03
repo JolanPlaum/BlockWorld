@@ -59,6 +59,18 @@ namespace dae {
 	void Renderer::Update(const Timer* pTimer)
 	{
 		m_pScene->Update(pTimer);
+
+		ChunkManager* cm = &ChunkManager::GetInstance();
+		cm->Update(m_pScene->GetCamera().GetInverseViewMatrix()[3], m_InitChunkList);
+
+		m_InitChunkList.erase(-1);
+		if (m_InitChunkList.size() > 0)
+		{
+			int i = *m_InitChunkList.begin();
+			m_pScene->RemoveMesh((*cm)[i].GetMesh());
+			m_pScene->AddMesh((*cm)[i].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i)));
+			m_InitChunkList.erase(m_InitChunkList.begin());
+		}
 	}
 
 	void Renderer::Render() const

@@ -31,6 +31,8 @@ namespace dae
 		void AddMesh(Mesh* pMesh);
 		void RemoveMesh(Mesh* pMesh);
 
+		const Camera& GetCamera() const { return m_Camera; }
+
 
 	private:
 		// Member variables

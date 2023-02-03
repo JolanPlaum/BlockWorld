@@ -28,6 +28,7 @@ namespace dae
 		Scene* m_pScene{};
 		Material* m_pMaterial{};
 		Chunk* m_pChunk{};
+		std::set<int> m_InitChunkList{};
 
 		int m_Width{};
 		int m_Height{};
