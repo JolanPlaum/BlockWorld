@@ -42,7 +42,7 @@ void Scene::Update(const Timer* pTimer)
 	Matrix viewProj = m_Camera.GetViewMatrix() * m_Camera.GetProjectionMatrix();
 
 	//Update Mesh
-	m_pMeshes[0]->GetMaterial()->SetMatrix(viewProj);
+	m_pMeshes.front()->GetMaterial()->SetMatrix(viewProj);
 }
 
 void Scene::Render(ID3D11DeviceContext* pDeviceContext) const
@@ -56,6 +56,11 @@ void Scene::Render(ID3D11DeviceContext* pDeviceContext) const
 void Scene::AddMesh(Mesh* pMesh)
 {
 	m_pMeshes.emplace_back(pMesh);
+}
+
+void Scene::RemoveMesh(Mesh* pMesh)
+{
+	m_pMeshes.remove(pMesh);
 }
 
 

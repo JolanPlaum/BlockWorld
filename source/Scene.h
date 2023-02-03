@@ -29,13 +29,14 @@ namespace dae
 		void Render(ID3D11DeviceContext* pDeviceContext) const;
 
 		void AddMesh(Mesh* pMesh);
+		void RemoveMesh(Mesh* pMesh);
 
 
 	private:
 		// Member variables
 		Camera m_Camera{};
 
-		std::vector<Mesh*> m_pMeshes{};
+		std::list<Mesh*> m_pMeshes{};
 	
 		//---------------------------
 		// Private Member Functions
