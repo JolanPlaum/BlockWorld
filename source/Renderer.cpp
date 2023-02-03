@@ -35,6 +35,7 @@ namespace dae {
 	Renderer::~Renderer()
 	{
 		delete m_pScene;
+		delete m_pMaterial;
 		delete m_pChunk;
 
 		if (m_pRenderTargetView) m_pRenderTargetView->Release();
