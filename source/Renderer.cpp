@@ -6,6 +6,7 @@
 #include "Material.h"
 #include "Texture.h"
 #include "Chunk.h"
+#include "ChunkManager.h"
 
 namespace dae {
 
@@ -24,7 +25,7 @@ namespace dae {
 		{
 			m_IsInitialized = true;
 			std::cout << "DirectX is initialized and ready!\n";
-			m_pScene = Scene2();
+			m_pScene = Scene3();
 		}
 		else
 		{
@@ -37,6 +38,7 @@ namespace dae {
 		delete m_pScene;
 		delete m_pMaterial;
 		delete m_pChunk;
+		delete m_pChunkManager;
 
 		if (m_pRenderTargetView) m_pRenderTargetView->Release();
 		if (m_pRenderTargetBuffer) m_pRenderTargetBuffer->Release();
@@ -303,6 +305,36 @@ namespace dae {
 
 		delete pTex;
 
+		return pScene;
+	}
+
+	Scene* Renderer::Scene3()
+	{
+		//Instantiate scene
+		Scene* pScene = new Scene(Camera({ 8.f, 16.f, -8.f }, 45.f, m_Width / (float)m_Height));
+
+		//Load material
+		m_pMaterial = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
+		Texture* pTex = new Texture(m_pDevice, "Resources/Atlas.png");
+		m_pMaterial->SetTexture(pTex);
+
+		//Instantiate chunks
+		m_pChunkManager = new ChunkManager();
+
+		//Add meshes to scene
+		Mesh* pTempMesh{};
+		for (int x{}; x < ChunkManager::m_WorldWidth; ++x)
+		{
+			for (int z{}; z < ChunkManager::m_WorldWidth; ++z)
+			{
+				pTempMesh = m_pChunkManager->GetChunk(x, z).Initialize(m_pDevice, m_pMaterial);
+				pTempMesh->SetPosition(x, 0, z);
+				pScene->AddMesh(pTempMesh);
+			}
+		}
+
+		//Cleanup and Return
+		delete pTex;
 		return pScene;
 	}
 }

@@ -60,6 +60,12 @@
     <ClInclude Include="Chunk.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="ChunkManager.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Atlas.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -96,6 +102,9 @@
       <Filter>Misc</Filter>
     </ClCompile>
     <ClCompile Include="Chunk.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="ChunkManager.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
   </ItemGroup>
