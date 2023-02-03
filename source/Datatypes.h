@@ -14,11 +14,12 @@ namespace dae
 
 		water,
 		dirt,
+		grass,
 		sand,
 		stone,
 	};
 
-	enum class FaceDirection : BYTE
+	enum class FaceType : BYTE
 	{
 		front, back,
 		bottom, top,
