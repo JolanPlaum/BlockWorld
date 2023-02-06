@@ -51,11 +51,11 @@ namespace dae
 		Matrix m_ViewMatrix{};
 		Matrix m_ProjectionMatrix{};
 
-		const float m_MovementSpeed{ 10.f };
+		const float m_MovementSpeed{ 100.f };
 		const float m_RotationSpeed{ 5.f };
 
 		const float m_Near{ 0.1f };
-		const float m_Far{ 1000.f };
+		const float m_Far{ 10000.f };
 	
 		//---------------------------
 		// Private Member Functions
