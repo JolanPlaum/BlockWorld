@@ -6,6 +6,7 @@ namespace dae
 	{
 		Vector3 position{};
 		Vector2 uv{};
+		Vector3 normal{};
 	};
 
 	struct Coord
@@ -27,6 +28,7 @@ namespace dae
 		dirt,
 		grass,
 		sand,
+		snow,
 		stone,
 	};
 

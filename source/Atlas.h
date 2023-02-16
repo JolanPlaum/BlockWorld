@@ -8,12 +8,16 @@ namespace dae
 			//			  col           row
 			//			   x             y
 
-			dirt = (0 << 4 | 15 - 0),
-			grass_side = (0 << 4 | 15 - 1),
-			grass_top = (0 << 4 | 15 - 2),
+			dirt		= (0 << 4 | 15 - 0),
+			grass_side	= (0 << 4 | 15 - 1),
+			grass_top	= (0 << 4 | 15 - 2),
 
-			water = (1 << 4 | 15 - 0),
-			sand = (1 << 4 | 15 - 1),
+			water		= (1 << 4 | 15 - 0),
+			sand		= (1 << 4 | 15 - 1),
+
+			snow_side	= (2 << 4 | 15 - 0),
+			snow_top	= (2 << 4 | 15 - 1),
+			snow		= (2 << 4 | 15 - 2),
 		};
 
 		static const float UVSize{ 1.f / 16.f };
@@ -36,6 +40,18 @@ namespace dae
 				case FaceType::top: tile = Tile::grass_top; break;
 				case FaceType::bottom: tile = Tile::dirt; break;
 				}
+				break;
+			case BlockType::snow:
+				switch (face)
+				{
+				case FaceType::front:
+				case FaceType::back:
+				case FaceType::left:
+				case FaceType::right: tile = Tile::snow_side; break;
+				case FaceType::top: tile = Tile::snow_top; break;
+				case FaceType::bottom: tile = Tile::dirt; break;
+				}
+				break;
 			case BlockType::stone: break;
 			}
 

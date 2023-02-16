@@ -27,6 +27,8 @@ namespace dae
 		Mesh* Initialize(ID3D11Device* pDevice, Material* pMaterial, Coord coord);
 		void Cleanup();
 
+		void NeedsInit() { m_NeedsToInitialize = true; }
+
 		Mesh* GetMesh() const { return m_pMesh; }
 
 		static const int width{ 16 };
@@ -37,6 +39,7 @@ namespace dae
 	private:
 		// Member variables
 		Mesh* m_pMesh{};
+		bool m_NeedsToInitialize{ true };
 
 		//---------------------------
 		// Private Member Functions

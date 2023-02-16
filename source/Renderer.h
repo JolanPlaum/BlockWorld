@@ -20,8 +20,12 @@ namespace dae
 		Renderer& operator=(const Renderer&)		= delete;
 		Renderer& operator=(Renderer&&) noexcept	= delete;
 
+		void UpdateWorld(int threadNr);
+		void UpdateChunkManager();
 		void Update(const Timer* pTimer);
 		void Render() const;
+
+		void ToggleChunkLoading() { m_LoadNewChunks = !m_LoadNewChunks; }
 
 	private:
 		SDL_Window* m_pWindow{};
@@ -29,11 +33,14 @@ namespace dae
 		Material* m_pMaterial{};
 		Chunk* m_pChunk{};
 		std::set<int> m_InitChunkList{};
+		int updateIndex{};
 
 		int m_Width{};
 		int m_Height{};
 
 		bool m_IsInitialized{ false };
+		bool m_ChunksInitialized{ true };
+		bool m_LoadNewChunks{ true };
 
 		//Chunk helper functions
 		BlockType GetBlockType(int x, int y, int z);

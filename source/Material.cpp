@@ -33,7 +33,7 @@ Material::Material(ID3D11Device* pDevice, const std::wstring& assetFile)
 		std::wcout << L"Shader Resource gDiffuseMap Variable not valid\n";
 
 	//Create Vertex Layout
-	static constexpr uint32_t numElements{ 2 };
+	static constexpr uint32_t numElements{ 3 };
 	D3D11_INPUT_ELEMENT_DESC vertexDesc[numElements]{};
 
 	vertexDesc[0].SemanticName = "POSITION";
@@ -45,6 +45,11 @@ Material::Material(ID3D11Device* pDevice, const std::wstring& assetFile)
 	vertexDesc[1].Format = DXGI_FORMAT_R32G32_FLOAT;
 	vertexDesc[1].AlignedByteOffset = 12;
 	vertexDesc[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+
+	vertexDesc[2].SemanticName = "NORMAL";
+	vertexDesc[2].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+	vertexDesc[2].AlignedByteOffset = 20;
+	vertexDesc[2].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
 
 	//Create Input Layout
 	D3DX11_PASS_DESC passDesc{};

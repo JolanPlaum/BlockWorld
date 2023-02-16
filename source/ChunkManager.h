@@ -28,8 +28,9 @@ namespace dae
 		// Public Member Functions
 		//---------------------------
 		void Update(const Vector3& cameraPosition, std::set<int>& initChunkList);
+		void Render(ID3D11DeviceContext* pDeviceContext) const;
 
-		static const int m_WorldWidth{ 32 };
+		static const int m_WorldWidth{ 127 };
 		static const int m_WorldSize{ m_WorldWidth * m_WorldWidth };
 
 		Chunk* GetChunk(int x, int z);
@@ -49,10 +50,12 @@ namespace dae
 		//---------------------------
 		ChunkManager();
 
-		void LoadChunk(Chunk& chunk);
-		BlockType GetBlockType(int x, int y, int z);
+		void LoadChunk(Chunk& chunk, Coord coord);
+		int GetHeightMap(int x, int z);
+		BlockType GetBlockType(int x, int y, int z, bool grass);
 
 		//int GetIndex(const Chunk& c) const;
+		BlockType GetBiomeBlock(int x, int z);
 		int GetIndex(int x, int z) const;
 	};
 }

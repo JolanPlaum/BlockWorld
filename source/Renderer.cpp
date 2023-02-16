@@ -56,21 +56,95 @@ namespace dae {
 		if (m_pDevice) m_pDevice->Release();
 	}
 
+	void Renderer::UpdateWorld(int threadNr)
+	{
+		if (m_ChunksInitialized == false) return;
+
+		ChunkManager* cm = &ChunkManager::GetInstance();
+
+		//if (m_InitChunkList.size() > 1)
+		//{
+		//	int i = *(--m_InitChunkList.end());
+		//	if (i != -1)
+		//	{
+		//		(*cm)[i].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i));
+		//		m_InitChunkList.erase(i);
+		//	}
+		//}
+
+		int nrThreads{ 4 };
+		int interval = ChunkManager::m_WorldSize / nrThreads;
+		int min = threadNr * interval;
+		int max = (threadNr + 1) * interval;
+		if (threadNr == nrThreads - 1) max = ChunkManager::m_WorldSize;
+		
+
+		for (int i{ min }; i < max; ++i)
+		{
+			(*cm)[i].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i));
+		}
+
+		//for (int i{}; i < ChunkManager::m_WorldWidth; ++i)
+		//{
+		//	(*cm)[i + updateIndex].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i + updateIndex));
+		//}
+		//updateIndex += ChunkManager::m_WorldWidth;
+		//updateIndex %= ChunkManager::m_WorldSize;
+
+
+		//if (m_ChunksInitialized == false)
+		//{
+		//	ChunkManager* cm = &ChunkManager::GetInstance();
+		//
+		//	//for (int i : m_InitChunkList)
+		//	//{
+		//	//	(*cm)[i].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i));
+		//	//}
+		//	//m_InitChunkList.clear();
+		//
+		//	if (m_InitChunkList.size() > 0)
+		//	{
+		//		int i = *m_InitChunkList.begin();
+		//		(*cm)[i].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i));
+		//		m_InitChunkList.erase(m_InitChunkList.begin());
+		//	}
+		//
+		//	m_ChunksInitialized = m_InitChunkList.empty();
+		//}
+	}
+
+	void Renderer::UpdateChunkManager()
+	{
+		if (m_LoadNewChunks)
+		{
+			m_ChunksInitialized = false;
+			ChunkManager::GetInstance().Update(m_pScene->GetCamera().GetInverseViewMatrix()[3], m_InitChunkList);
+			m_ChunksInitialized = true;
+		}
+	}
+
 	void Renderer::Update(const Timer* pTimer)
 	{
 		m_pScene->Update(pTimer);
+		Matrix viewProj = m_pScene->GetCamera().GetViewMatrix() * m_pScene->GetCamera().GetProjectionMatrix();
+		m_pMaterial->SetMatrix(viewProj);
 
-		ChunkManager* cm = &ChunkManager::GetInstance();
-		cm->Update(m_pScene->GetCamera().GetInverseViewMatrix()[3], m_InitChunkList);
+		//if (m_ChunksInitialized)
+		//{
+		//	std::set<int> temp{};
+		//	ChunkManager::GetInstance().Update(m_pScene->GetCamera().GetInverseViewMatrix()[3], temp);
+		//	//m_InitChunkList.erase(-1);
+		//	//m_ChunksInitialized = false;
+		//}
 
-		m_InitChunkList.erase(-1);
-		if (m_InitChunkList.size() > 0)
-		{
-			int i = *m_InitChunkList.begin();
-			m_pScene->RemoveMesh((*cm)[i].GetMesh());
-			m_pScene->AddMesh((*cm)[i].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i)));
-			m_InitChunkList.erase(m_InitChunkList.begin());
-		}
+		//m_InitChunkList.erase(-1);
+		//if (m_InitChunkList.size() > 0)
+		//{
+		//	int i = *m_InitChunkList.begin();
+		//	m_pScene->RemoveMesh((*cm)[i].GetMesh());
+		//	m_pScene->AddMesh((*cm)[i].Initialize(m_pDevice, m_pMaterial, cm->GetCoord(i)));
+		//	m_InitChunkList.erase(m_InitChunkList.begin());
+		//}
 	}
 
 	void Renderer::Render() const
@@ -84,7 +158,8 @@ namespace dae {
 		m_pDeviceContext->ClearDepthStencilView(m_pDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.f, 0);
 
 		//2. SET PIPELINE + INVOKE DRAWCALLS (= RENDER)
-		m_pScene->Render(m_pDeviceContext);
+		//m_pScene->Render(m_pDeviceContext);
+		ChunkManager::GetInstance().Render(m_pDeviceContext);
 
 		//3. PRESENT BACKBUFFER (SWAP)
 		m_pSwapChain->Present(0, 0);
@@ -322,7 +397,7 @@ namespace dae {
 	Scene* Renderer::Scene3()
 	{
 		//Instantiate scene
-		Scene* pScene = new Scene(Camera({ 8.f, 16.f, -8.f }, 45.f, m_Width / (float)m_Height));
+		Scene* pScene = new Scene(Camera({ 8.f, 32.f, -8.f }, 45.f, m_Width / (float)m_Height));
 
 		//Load material
 		m_pMaterial = new Material(m_pDevice, L"Resources/BasicDiffuse.fx");
@@ -336,7 +411,7 @@ namespace dae {
 			for (int z{}; z < ChunkManager::m_WorldWidth; ++z)
 			{
 				pTempMesh = ChunkManager::GetInstance().GetChunk(x, z)->Initialize(m_pDevice, m_pMaterial, {x, z});
-				pScene->AddMesh(pTempMesh);
+				//pScene->AddMesh(pTempMesh);
 			}
 		}
 

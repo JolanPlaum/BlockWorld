@@ -39,10 +39,10 @@ void Scene::Update(const Timer* pTimer)
 	m_Camera.Update(pTimer);
 
 	//Calculate the WorldViewProjection matrix
-	Matrix viewProj = m_Camera.GetViewMatrix() * m_Camera.GetProjectionMatrix();
+	//Matrix viewProj = m_Camera.GetViewMatrix() * m_Camera.GetProjectionMatrix();
 
 	//Update Mesh
-	m_pMeshes.front()->GetMaterial()->SetMatrix(viewProj);
+	//m_pMeshes.front()->GetMaterial()->SetMatrix(viewProj);
 }
 
 void Scene::Render(ID3D11DeviceContext* pDeviceContext) const

@@ -6,6 +6,7 @@
 
 #undef main
 #include "Renderer.h"
+#include <thread>
 
 using namespace dae;
 
@@ -44,6 +45,12 @@ int main(int argc, char* args[])
 	pTimer->Start();
 	float printTimer = 0.f;
 	bool isLooping = true;
+
+	std::thread worldThread{ [&]() {while (isLooping) pRenderer->UpdateWorld(0); } };
+	std::thread worldThread1{ [&]() {while (isLooping) pRenderer->UpdateWorld(1); } };
+	std::thread worldThread2{ [&]() {while (isLooping) pRenderer->UpdateWorld(2); } };
+	std::thread worldThread3{ [&]() {while (isLooping) pRenderer->UpdateWorld(3); } };
+	std::thread chunkThread{ [&]() {while (isLooping) pRenderer->UpdateChunkManager(); } };
 	while (isLooping)
 	{
 		//--------- Get input events ---------
@@ -57,7 +64,8 @@ int main(int argc, char* args[])
 				break;
 			case SDL_KEYUP:
 				//Test for a key
-				//if (e.key.keysym.scancode == SDL_SCANCODE_X)
+				if (e.key.keysym.scancode == SDL_SCANCODE_F2)
+					pRenderer->ToggleChunkLoading();
 				break;
 			default: ;
 			}
@@ -79,6 +87,11 @@ int main(int argc, char* args[])
 		}
 	}
 	pTimer->Stop();
+	worldThread.join();
+	worldThread1.join();
+	worldThread2.join();
+	worldThread3.join();
+	chunkThread.join();
 
 	//Shutdown "framework"
 	delete pRenderer;
